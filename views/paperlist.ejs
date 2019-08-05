@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+    <title>PaperList</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="https://www.huangwx.cn/css/sweetalert.css">
+    <script type="text/javascript" src="https://www.huangwx.cn/js/sweetalert-dev.js"></script>
+</head>
+<body>
+<header>
+    <input type="text" placeholder="姓名" id="name">
+    <input type="text" placeholder="学号" id="sid">
+    <button type="submit" id="login">
+        <svg t="1556529754702" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" p-id="3125" xmlns:xlink="http://www.w3.org/1999/xlink" width="48"
+             height="48">
+            <defs>
+                <style type="text/css"></style>
+            </defs>
+            <path d="M548.43904 684.246016c7.16288 0.013312 14.034944-2.83648 19.08736-7.914496L727.109632 512.553984 567.513088 348.763136c-10.724352-10.368-27.833344-10.07104-38.187008 0.659456-10.118144 10.473472-10.118144 27.067392 0 37.540864L654.942208 512.579584 529.32608 638.210048c-10.514432 10.578944-10.461184 27.6736 0.131072 38.201344C534.510592 681.422848 541.329408 684.232704 548.43904 684.246016zM106.651648 538.724352l563.526656 0c14.917632 0 27.014144-12.1088 27.014144-27.021312 0-14.918656-12.096512-27.015168-27.014144-27.015168l-563.526656 0c-14.931968 0-27.015168 12.096512-27.015168 27.015168C79.63648 526.614528 91.71968 538.724352 106.651648 538.724352zM350.04928 890.208256 350.04928 646.255616l54.385664-0.078848 0 211.371008c0 18.044928 14.642176 32.672768 32.687104 32.672768l420.168704 0c18.044928 0 32.673792-14.62784 32.673792-32.672768l0 0-0.831488-690.812928c0-18.044928-14.628864-32.673792-32.673792-32.673792-0.013312 0-0.013312 0-0.013312 0L437.13536 134.061056c-18.044928 0-32.687104 14.628864-32.687104 32.673792l0 210.190336-54.398976 0 0-243.134464c0-29.837312 24.192-54.030336 54.030336-54.030336l486.267904 0c29.838336 0 54.030336 24.192 54.030336 54.030336l0 756.416512c0 29.838336-24.192 54.030336-54.030336 54.030336L404.078592 944.237568C374.24128 944.237568 350.04928 920.045568 350.04928 890.208256z"
+                  p-id="3126" fill="white"></path>
+        </svg>
+</header>
+<div class="container">
+    <!-- unselected -->
+    <div class="papers" id="toSelect">
+        <% papers.forEach(function (paper) { %>
+            <li <% if(paper.get("Owner") != ''){%> style="background: lightgray" <% } %> >
+                <div class="texts">
+                    <a id="title" class="title" name = <%= paper.get("Document Title") %>
+                       href= <%= paper.get("PDF Link") %> target="view_window"><%= paper.get("Document Title") %></a>
+                    <text id="Authors">By <%= paper.get("Authors") %></text>
+                    <text id="Pages">Total <%= paper.get("Pages") %> Pages</text>
+                </div>
+                <div class="buttons">
+                    <button class="select" id="select">
+                        <svg t="1556535878074" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="5125" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="30" height="30">
+                            <defs>
+                                <style type="text/css"></style>
+                            </defs>
+                            <path d="M671.232 529.408v215.04H145.408V203.264h525.824v94.72l94.208-78.336v-111.104H51.2V838.656h714.24V450.56z"
+                                  fill="#1296db" p-id="5126"></path>
+                            <path d="M400.384 677.376L278.528 428.032c-8.192-16.384-1.024-35.84 14.848-44.032l47.616-23.552c16.384-8.192 35.84-1.024 44.032 14.848l72.192 147.456L904.704 128c13.312-12.288 34.304-10.752 46.592 2.56l35.328 39.936c12.288 13.824 10.752 34.304-2.56 46.592l-532.48 470.528c-15.872 14.336-41.472 9.216-51.2-10.24z"
+                                  fill="#1296db" p-id="5127"></path>
+                        </svg>
+                    </button>
+                    <button class="remove" id="remove">
+                        <svg t="1556535912009" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="7298" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="30" height="30">
+                            <defs>
+                                <style type="text/css"></style>
+                            </defs>
+                            <path d="M511.104 0C228.821333 0 0 228.821333 0 511.104c0 282.282667 228.821333 511.104 511.104 511.104 282.282667 0 511.104-228.842667 511.104-511.104C1022.208 228.821333 793.386667 0 511.104 0zM511.104 898.496c-213.973333 0-387.434667-173.44-387.434667-387.413333 0-213.952 173.44-387.413333 387.434667-387.413333 213.952 0 387.392 173.44 387.392 387.413333C898.496 725.056 725.056 898.496 511.104 898.496z"
+                                  p-id="7299" fill="#1296db"></path>
+                            <path d="M236.437333 463.914667l549.333333 0 0 96.874667-549.333333 0 0-96.874667Z"
+                                  p-id="7300" fill="#1296db"></path>
+                        </svg>
+                    </button>
+                </div>
+            </li>
+        <% }) %>
+    </div>
+</div>
+</body>
+
+<script>
+    const ws = new WebSocket('ws://localhost:10086')
+    ws.onopen = function() {
+        ws.send('来自客户端的信息')
+    }
+
+    ws.onmessage = function(e) {
+        // console.log(e.data);
+        let change = JSON.parse(e.data);
+        let paperTitle = String(change.title);
+        switch (change.type) {
+            case "selection" :
+                // console.log('success')
+                $("a:contains('"+ paperTitle +"')").parent().parent().css("background",'lightgray')
+                break;
+            case "removal" :
+                $("a:contains('"+ paperTitle +"')").parent().parent().css("background",'white');
+                break;
+        }
+    }
+
+    $(document).ready(function () {
+        $('#login').click(function () {
+            $.ajax({
+                type: 'post',
+                data: JSON.stringify({
+                    name: $('#name').val(),
+                    sid: $('#sid').val()
+                }),
+                contentType: "application/json; charset=utf-8",
+                url: '/paperlist/api/login',
+                success: function (res) {
+                    // console.log(res)
+                    if (res.ownedPapers.length > 0) {
+                        console.log(res.ownedPapers)
+                        for(let p of res.ownedPapers) {
+                            console.log(p["Document Title"])
+                            $("a:contains('"+ p["Document Title"] +"')").parent().parent().css("border",'3px solid lightskyblue')
+                        }
+                    }
+                    let ownedPapersCounts = res.ownedPapers.length;
+                    if (ownedPapersCounts === 5) {
+                        swal("完成", "你已经选择了 5 篇论文", "success")
+                    } else {
+                        swal("还需要选择 " + (5 - ownedPapersCounts) + " 篇论文")
+                    }
+                    localStorage.clear()
+                    localStorage.setItem("token", res.token)
+                },
+                error: function (res) {
+                    swal("你好像不是这门课的学生...");
+                    localStorage.clear();
+                }
+            })
+        });
+
+        $('.select').click(function () {
+            var that = this;
+            const token = localStorage.getItem("token");
+            // console.log(token);
+            if(!token) {
+                swal("请先登录~")
+            }else{
+                const paper = $(this).parent().parent().find(".title").text()
+                // console.log(paper)
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url:'/paperlist/api/selection',
+                    headers: {
+                      Authorization : 'Bearer' + ' ' + String(token)
+                    },
+                    data:JSON.stringify({
+                        paper: paper
+                    }),
+                    success(res){
+                        // console.log(res)
+                        $(that).parent().parent().css("background","lightgray")
+                        $(that).parent().parent().css("border","3px solid lightskyblue")
+                        swal(String(res))
+                    },
+                    error(err){
+                        swal(err.responseText);
+                    }
+                })
+            }
+        });
+
+        $('.remove').click(function () {
+            const token = localStorage.getItem("token");
+            console.log(token);
+            var that = this;
+            if(!token) {
+                swal("请先登录~")
+            }else{
+                const paper = $(this).parent().parent().find(".title").text()
+                console.log(paper)
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url:'/paperlist/api/removal',
+                    headers: {
+                        Authorization : 'Bearer' + ' ' + String(token)
+                    },
+                    data:JSON.stringify({
+                        paper: paper
+                    }),
+                    success(res){
+                        $(that).parent().parent().css("background","white");
+                        $(that).parent().parent().css("border","0px")
+                    },
+                    error(err){
+                        console.log(err)
+                    }
+                })
+            }
+        });
+
+    })
+</script>
+
+</html>
